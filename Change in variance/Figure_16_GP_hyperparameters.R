@@ -8,13 +8,13 @@ kernel <- function(X1, X2, l=1, sigma_f=1){
 
 posterior <- function(X_s, X_train, Y_train, l=1, sigma_f=1, sigma_y=10^(-8)){
   
-  K = kernel(X_train, X_train, l, sigma_f) + sigma_y ^ 2 * diag(length(X_train))
-  K_s = kernel(X_train, X_s, l, sigma_f)
-  K_ss = kernel(X_s, X_s, l, sigma_f) + 10^(-8) * diag(length(X_s))
-  K_inv = solve(K)
+  K <- kernel(X_train, X_train, l, sigma_f) + sigma_y ^ 2 * diag(length(X_train))
+  K_s <- kernel(X_train, X_s, l, sigma_f)
+  K_ss <- kernel(X_s, X_s, l, sigma_f) + 10^(-8) * diag(length(X_s))
+  K_inv <- solve(K)
   
-  mu_s = t(K_s) %*% K_inv %*% Y_train
-  cov_s = K_ss - t(K_s) %*% K_inv %*% K_s
+  mu_s <- t(K_s) %*% K_inv %*% Y_train
+  cov_s <- K_ss - t(K_s) %*% K_inv %*% K_s
   
   return(list(mu_s=mu_s, cov_s=cov_s))
 }
