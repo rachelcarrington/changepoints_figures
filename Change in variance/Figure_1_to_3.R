@@ -2,10 +2,21 @@ library(ggplot2)
 
 # Figure 1
 
+calculate_x_phi_var <- function(x, b0, phi, phi_obs, h1, h2){
+  
+  x2 <- x
+  x2[(b0 - h1 + 1):b0] <- sqrt(phi / phi_obs) * x[(b0 - h1 + 1):b0]
+  x2[(b0 + 1):(b0 + h2)] <- sqrt((1 - phi) / (1 - phi_obs)) * x[(b0 + 1):(b0 + h2)]
+
+  return(x2)
+  
+}
+
+
 set.seed(3)
 h <- 30
 x <- c(rnorm(40, sd=3), rnorm(60))
-results <- binary_segmentation(x, model="var")
+results <- binary_segmentation(x, model="var", threshold=10)
 b <- results$changepoints[1]
 phi_obs <- sum(x[(b - h + 1):b]^2) / sum(x[(b - h + 1):(b + h)]^2)
 x2 <- calculate_x_phi_var(x, b, 0.5, phi_obs, h, h)
@@ -39,14 +50,16 @@ g2 <- ggplot(data.frame(z=1:300, x=x^2)) +
   theme_classic() + labs(x="", y="Y") +
   theme(axis.text=element_text(size=20), axis.title=element_text(size=22))
 
-g3 <- ggplot(data.frame(z=1:299, x=cusum(x^2))) + 
-  geom_line(aes(x=z, y=x)) + 
+g3 <- ggplot(data.frame(z=1:299, G=abs(cusum(x^2)))) + 
+  geom_line(aes(x=z, y=G)) + 
   geom_vline(xintercept=200, colour="blue") +
   geom_vline(xintercept=results$changepoints, colour="red", linetype="dashed") +
-  theme_classic() + labs(x="t", y="G(t)") +
+  theme_classic() + labs(x="t", y="|G(t)|") +
   theme(axis.text=element_text(size=20), axis.title=element_text(size=22))
 
+pdf("cusum_single_cp_est.pdf", width=15, height=12)
 ggarrange(g1, g2, g3, nrow=3)
+dev.off()
 
 # Figure 3
 
