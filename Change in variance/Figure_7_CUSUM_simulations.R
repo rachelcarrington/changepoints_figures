@@ -20,7 +20,7 @@ for ( k in 1:length(sizes_of_change) ){
   while ( iter <= N ){
     x <- rnorm(n) * c(rep(1, n/5), rep(delta, n/5), rep(1, n/5), rep(delta, n/5), rep(1, n/5))
     results <- find_changepoints(x, model="var", method="bs", params=list(loss="cusum", threshold=threshold, maxiter=K))
-    if ( length(results$b) >= 1 ){
+    if ( length(results$changepoints) >= 1 ){
       for ( j in 1:length(h_list) ){
         h <- h_list[j]
         pval_results <- calculate_pvals_all(results, h=h, sigma2=1)
@@ -75,7 +75,7 @@ for ( k in 1:length(sizes_of_change) ){
   }
 }
 
-saveRDS(pvals, "pvals_cusum_multiple_pvals_fixed_changes.rds")
+saveRDS(pvals, "pvals_cusum_multiple_pvals_random_changes.rds")
 
 ###########################################################################################################################################################################
 
