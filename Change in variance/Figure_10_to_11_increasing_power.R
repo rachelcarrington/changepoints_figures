@@ -1,7 +1,6 @@
 # Increasing power
 
-###########################################################################################################################################################################
-
+##################################################################################################################
 # CUSUM: H0
 
 set.seed(100)
@@ -37,13 +36,12 @@ g1 <- ggplot(data.frame(p=p, z=rep(seq(0, 1, length.out=NN), 5), NW=as.factor(re
   geom_line(aes(x=z, y=p, colour=NW, linetype=NW), linewidth=1.2) + 
   geom_abline(intercept=0, slope=1) + 
   theme_classic() + 
-  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.text=element_text(size=18), legend.title=element_text(size=18),
-        legend.key.size=unit(3, "line")) +
+  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.text=element_text(size=18), 
+        legend.title=element_text(size=18), legend.key.size=unit(3, "line")) +
   labs(x="U(0, 1)", y="p-value") + 
   guides(colour=guide_legend(title="Number of samples"), linetype=guide_legend(title="Number of samples"))
 
-###########################################################################################################################################################################
-
+##################################################################################################################
 # CUSUM: H1
 
 set.seed(100)
@@ -78,21 +76,18 @@ g2 <- ggplot(data.frame(p=p, z=rep(seq(0, 1, length.out=NN), 5), N=as.factor(rep
   geom_line(aes(x=z, y=p, colour=N, linetype=N), linewidth=1.2) + 
   geom_abline(intercept=0, slope=1) + 
   theme_classic() +
-  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.text=element_text(size=18), legend.title=element_text(size=18),
-        legend.key.size=unit(3, "line")) +
+  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.text=element_text(size=18), 
+        legend.title=element_text(size=18), legend.key.size=unit(3, "line")) +
   labs(x="U(0, 1)", y="") + 
   guides(colour=guide_legend(title="Number of samples"), linetype=guide_legend(title="Number of samples"))
 
-###########################################################################################################################################################################
-
+##################################################################################################################
 # Figure 10: Plot CUSUM H0 and H1
+
 ggarrange(g1, g2, common.legend=TRUE, legend="bottom")
 
-###########################################################################################################################################################################
-
-# Figure 11
-
-# LRS: simulating under H0
+##################################################################################################################
+# Figure 11: LRS -- simulating under H0
 
 set.seed(10)
 
@@ -196,8 +191,8 @@ g50 <- ggplot(dat50) +
   geom_line(aes(x=z, y=p, colour=NW, linetype=NW), linewidth=1.2) + 
   geom_abline(intercept=0, slope=1) + 
   theme_classic() + labs(x="U(0, 1)", y="p-value") +
-  theme(axis.title=element_text(size=22), axis.text=element_text(size=20), legend.title=element_text(size=18), legend.text=element_text(size=18), 
-        legend.key.size=unit(3, "line")) + 
+  theme(axis.title=element_text(size=22), axis.text=element_text(size=20), legend.title=element_text(size=18), 
+        legend.text=element_text(size=18), legend.key.size=unit(3, "line")) + 
   guides(colour=guide_legend(title="Number of samples"), linetype=guide_legend(title="Number of samples"))
 
 g100 <- ggplot(dat100) + 
