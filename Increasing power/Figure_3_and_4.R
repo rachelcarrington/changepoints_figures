@@ -14,7 +14,8 @@ for ( delta in c(1, 2, 3) ){
       results <- find_changepoints(x, "bs", list(threshold=3, maxiter=1))
       if ( length(results$changepoints) >= 1 ){
         if ( results$changepoints[1] >= h & results$changepoints[1] <= n - h ){
-          pval_results <- calculate_pvals_all(results, N=50, h=h, sigma2=1, include_original=TRUE, num_pvals=1, return_probs=TRUE)
+          pval_results <- calculate_pvals_all(results, N=50, h=h, sigma2=1, include_original=TRUE, 
+                                              return_probs=TRUE)
           pvals[iter, 1] <- pval_results$P_both[1] / pval_results$P_phi_in_S[1]
           pvals[iter, 2] <- sum(pval_results$P_both[1:2]) / sum(pval_results$P_phi_in_S[1:2])
           pvals[iter, 3] <- sum(pval_results$P_both[1:5]) / sum(pval_results$P_phi_in_S[1:5])
@@ -52,7 +53,8 @@ fig3a <- ggplot(dat) + geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=
   geom_abline(intercept=0, slope=1) + 
   labs(x="U(0,1)", y="P-value", colour="Number of samples", linetype="Number of samples") + 
   theme_classic() +
-  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.title=element_text(size=22), legend.text=element_text(size=22))
+  theme(axis.text=element_text(size=20), axis.title=element_text(size=22), legend.title=element_text(size=22), 
+        legend.text=element_text(size=22))
 
 ###################################################################################################################
 # Figure 3(b)
@@ -110,7 +112,8 @@ fig3d <- ggplot(dat) + geom_line(aes(x=z, y=p, colour=N, linetype=N), linewidth=
 ###################################################################################################################
 # Create Figure 3
 
-ggarrange(fig3a + theme(legend.key.size=unit(4, "line")), fig3b, fig3c, fig3d, ncol=4, nrow=1, common.legend=TRUE, legend="bottom")
+ggarrange(fig3a + theme(legend.key.size=unit(4, "line")), fig3b, fig3c, fig3d, 
+          ncol=4, nrow=1, common.legend=TRUE, legend="bottom")
 
 ###################################################################################################################
 # Figure 4: power plots for BS, K = 1
