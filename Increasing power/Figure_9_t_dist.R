@@ -1,7 +1,7 @@
 # QQ plots, t distribution
 
 ###################################################################################################################
-# H0
+# Simulating under H0
 
 set.seed(1)
 
@@ -18,9 +18,11 @@ for ( h in h_list ){
     while( iter <= num_iter ){
       x <- rt(n, df)
       results <- find_changepoints(x, "bs", list(threshold=3.5, maxiter=1))
-      if ( length(results$changepoints) >= 1 ){ # only keep simulations for which the changepoint algorithm detects at least one changepoint
+      if ( length(results$changepoints) >= 1 ){ 
+        # only keep simulations for which the algorithm detects at least one changepoint
         if ( results$changepoints[1] >= h & results$changepoints[1] <= (n - h) ){
-          results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=df/(df - 2), num_pvals=1, include_original=TRUE, return_probs=TRUE)
+          results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=df/(df - 2), num_pvals=1, 
+                                               include_original=TRUE, return_probs=TRUE)
           pvals[iter, 1] <- results_pvals$P_both[1] / results_pvals$P_phi_in_S[1]
           pvals[iter, 2] <- sum(results_pvals$P_both[1:2]) / sum(results_pvals$P_phi_in_S[1:2])
           pvals[iter, 3] <- sum(results_pvals$P_both[1:5]) / sum(results_pvals$P_phi_in_S[1:5])
@@ -40,7 +42,7 @@ for ( h in h_list ){
 }
 
 ###################################################################################################################
-# H1
+# Simulating under H1
 
 set.seed(1)
 
@@ -57,7 +59,8 @@ for ( delta in c(1, 2) ){
         results <- find_changepoints(x, "bs", list(threshold=3.5, maxiter=1))
         if ( length(results$changepoints) >=1 ){
           if ( results$changepoints[1] >= h & results$changepoints[1] <= (n - h) ){
-            results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=df/(df - 2), include_original=TRUE, num_pvals=1, return_probs=TRUE)
+            results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=df/(df - 2), include_original=TRUE, 
+                                                 num_pvals=1, return_probs=TRUE)
             pvals[iter, 1] <- results_pvals$P_both[1] / results_pvals$P_phi_in_S[1]
             pvals[iter, 2] <- sum(results_pvals$P_both[1:2]) / sum(results_pvals$P_phi_in_S[1:2])
             pvals[iter, 3] <- sum(results_pvals$P_both[1:5]) / sum(results_pvals$P_phi_in_S[1:5])
@@ -77,7 +80,7 @@ for ( delta in c(1, 2) ){
 }
 
 ###################################################################################################################
-# Fig. 8(a): H0, h = 10, df = 5
+# Fig. 9(a): H0, h = 10, df = 5
 
 h <- 10
 df <- 5
@@ -89,17 +92,19 @@ for ( i in 1:5 ){
 }
 
 # Plot p-values against theoretical quantities from U(0,1)
-dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4), y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
+dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4), 
+                  y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
                   N=rep(as.factor(c(1, 5, 10, 50)), each=nrow(pvals_sorted)))
 
-fig8a <- ggplot(dat) + geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
+fig8a <- ggplot(dat) + 
+  geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
   geom_abline(intercept=0, slope=1) + labs(x="U(0,1)", y="P-value") + 
   theme_classic() +
   theme(axis.text=element_text(size=22), axis.title=element_text(size=24), 
         legend.title=element_text(size=18), legend.text=element_text(size=18), legend.key.size=unit(3, "line"))
 
 ###################################################################################################################
-# Fig. 8(b): H0, h = 10, df = 10
+# Fig. 9(b): H0, h = 10, df = 10
 
 h <- 10
 df <- 10
@@ -111,16 +116,18 @@ for ( i in 1:5 ){
 }
 
 # Plot p-values against theoretical quantities from U(0,1)
-dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4), y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
+dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4),
+                  y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
                   N=rep(as.factor(c(1, 5, 10, 50)), each=nrow(pvals_sorted)))
 
-fig8b <- ggplot(dat) + geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
+fig8b <- ggplot(dat) + 
+  geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
   geom_abline(intercept=0, slope=1) + labs(x="U(0,1)", y="") + 
   theme_classic() +
   theme(axis.text=element_text(size=22), axis.title=element_text(size=24))
 
 ###################################################################################################################
-# Fig. 8(c)
+# Fig. 9(c)
 
 h <- 10
 df <- 5
@@ -135,10 +142,12 @@ for ( i in 1:5 ){
 }
 
 # Plot p-values against theoretical quantities from U(0,1)
-dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4), y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
+dat <- data.frame(x=rep(seq(0, 1, length.out=nrow(pvals_sorted)), 4),
+                  y=as.vector(pvals_sorted[,c(1,2,3,5)]), 
                   N=rep(as.factor(c(1, 5, 10, 50)), each=nrow(pvals_sorted)))
 
-fig8c <- ggplot(dat) + geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
+fig8c <- ggplot(dat) + 
+  geom_line(aes(x=x, y=y, colour=N, linetype=N), linewidth=1.2) +
   geom_abline(intercept=0, slope=1) + labs(x="U(0,1)", y="") + 
   theme_classic() +
   theme(axis.text=element_text(size=22), axis.title=element_text(size=24))
