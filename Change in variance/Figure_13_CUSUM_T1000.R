@@ -3,7 +3,7 @@
 library(ggplot2)
 library(ggpubr)
 
-###########################################################################################################################################################################
+##################################################################################################################
 
 h_list <- c(10, 20, 50)
 n <- 1000
@@ -44,7 +44,7 @@ while ( iter <= N ){
 }
 saveRDS(p, paste0("pvals_var_cusum_H0_T", n, "_hNA.rds"))
 
-###########################################################################################################################################################################
+##################################################################################################################
 
 # Simulating under H1 with one change, fitting a single changepoint
 
@@ -83,7 +83,7 @@ dimnames(p)[[3]] <- sizes_of_change^2
 
 saveRDS(p, paste0("pvals_var_cusum_H1_T", n, "_K1.rds"))
 
-###########################################################################################################################################################################
+##################################################################################################################
 
 # Plots
 
@@ -118,32 +118,32 @@ g0 <- ggplot(dat_H0) +
   geom_abline(intercept=0, slope=1) + 
   geom_line(aes(x=z, y=p, colour=h, linetype=h), linewidth=1.5) + 
   theme_classic() +
-  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), legend.title=element_text(size=26), 
-        legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
+  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), 
+        legend.title=element_text(size=26), legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
   labs(x="U(0,1)", y="p-value")
 
 g1 <- ggplot(dat[dat$delta == 1,]) + 
   geom_abline(intercept=0, slope=1) + 
   geom_line(aes(x=z, y=p, colour=h, linetype=h), linewidth=1.5) +
   theme_classic() + 
-  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), legend.title=element_text(size=26), 
-        legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
+  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), 
+        legend.title=element_text(size=26), legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
   labs(x="U(0,1)", y="")
 
 g2 <- ggplot(dat[dat$delta == 2,]) + 
   geom_line(aes(x=z, y=p, colour=h, linetype=h), linewidth=1.5) +
   geom_abline(intercept=0, slope=1) + 
   theme_classic() +
-  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), legend.title=element_text(size=26), 
-        legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
+  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), 
+        legend.title=element_text(size=26), legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
   labs(x="U(0,1)", y="")
 
 g3 <- ggplot(dat[dat$delta == 3,]) + 
   geom_line(aes(x=z, y=p, colour=h, linetype=h), linewidth=1.5) +
   geom_abline(intercept=0, slope=1) + 
   theme_classic() +
-  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22), legend.title=element_text(size=26), 
-        legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
+  theme(legend.position="None", axis.title=element_text(size=28), axis.text=element_text(size=22),
+        legend.title=element_text(size=26), legend.text=element_text(size=24), legend.key.size=unit(3, "line")) +
   labs(x="U(0,1)", y="")
 
 ggarrange(g0, g1, g2, g3, ncol=4, common.legend=TRUE, legend="bottom")
