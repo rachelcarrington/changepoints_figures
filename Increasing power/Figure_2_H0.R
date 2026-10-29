@@ -10,16 +10,19 @@ n <- 1000 # size of dataset
 num_iter <- 1000 # number of simulations
 
 pvals_not_10 <- pvals_not_20 <- pvals_obs_10 <- pvals_obs_20 <- matrix(NA, nrow=num_iter, ncol=5)
-colnames(pvals_not_10) <- colnames(pvals_not_20) <- colnames(pvals_obs_10) <- colnames(pvals_obs_20) <- paste0("N", c(1, 5, 10, 20, 50))
+colnames(pvals_not_10) <- colnames(pvals_not_20) <- colnames(pvals_obs_10) <- 
+  colnames(pvals_obs_20) <- paste0("N", c(1, 5, 10, 20, 50))
 
 h <- 10 # window size
 iter <- 1
 while( iter <= num_iter ){
   x <- rnorm(n)
   results <- find_changepoints(x, "bs", list(threshold=2, maxiter=1))
-  if ( length(results$changepoints) >= 1 ){ # only keep simulations for which the changepoint algorithm detects at least one changepoint
+  if ( length(results$changepoints) >= 1 ){ 
+    # only keep simulations for which the changepoint algorithm detects at least one changepoint
     if ( results$changepoints[1] >= h & results$changepoints[1] <= n - h ){
-      pval_results <- calculate_pvals_all(results, N=51, h=h, sigma2=1, num_pvals=1, include_original=TRUE, return_probs=TRUE)
+      pval_results <- calculate_pvals_all(results, N=51, h=h, sigma2=1, num_pvals=1, include_original=TRUE, 
+                                          return_probs=TRUE)
       
       # Not including observed phi
       pvals_not_10[iter, 1] <- pval_results$P_both[2] / pval_results$P_phi_in_S[2]
@@ -40,7 +43,8 @@ while( iter <= num_iter ){
     }
   }
 }
-pvals_not_10[pvals_not_10 > 1] <- 1 # some p-values may be slightly above 1 due to floating point errors
+# some p-values may be slightly above 1 due to floating point errors
+pvals_not_10[pvals_not_10 > 1] <- 1
 pvals_obs_10[pvals_obs_10 > 1] <- 1
 
 
@@ -50,9 +54,11 @@ iter <- 1
 while( iter <= num_iter ){
   x <- rnorm(n)
   results <- find_changepoints(x, "bs", list(threshold=2, maxiter=1))
-  if ( length(results$changepoints) >= 1 ){ # only keep simulations for which the changepoint algorithm detects at least one changepoint
+  if ( length(results$changepoints) >= 1 ){ 
+    # only keep simulations for which the changepoint algorithm detects at least one changepoint
     if ( results$changepoints[1] >= h & results$changepoints[1] <= n - h ){
-      pval_results <- calculate_pvals_all(results, N=51, h=h, sigma2=1, num_pvals=1, include_original=TRUE, return_probs=TRUE)
+      pval_results <- calculate_pvals_all(results, N=51, h=h, sigma2=1, num_pvals=1, include_original=TRUE, 
+                                          return_probs=TRUE)
       
       # Not including observed phi
       pvals_not_20[iter, 1] <- pval_results$P_both[2] / pval_results$P_phi_in_S[2]
@@ -73,7 +79,8 @@ while( iter <= num_iter ){
     }
   }
 }
-pvals_not_20[pvals_not_20 > 1] <- 1 # some p-values may be slightly above 1 due to floating point errors
+# some p-values may be slightly above 1 due to floating point errors
+pvals_not_20[pvals_not_20 > 1] <- 1
 pvals_obs_20[pvals_obs_20 > 1] <- 1
 
 ###################################################################################################################
@@ -108,7 +115,8 @@ dat$N <- as.factor(rep(c(1, 5, 10, 20, 50), num_pvals))
 fig2b <- ggplot(dat) + geom_line(aes(x=z, y=p, colour=N, linetype=N), linewidth=1.2) +
   geom_abline(intercept=0, slope=1) + labs(x="U(0,1)", y="P-value") + 
   theme_classic() +
-  theme(axis.text=element_text(size=18), axis.title=element_text(size=20), legend.title=element_text(size=16), legend.text=element_text(size=16))
+  theme(axis.text=element_text(size=18), axis.title=element_text(size=20), legend.title=element_text(size=16), 
+        legend.text=element_text(size=16))
 
 ###################################################################################################################
 # Figure 2(c): h = 10, including observed
@@ -148,5 +156,6 @@ fig2d <- ggplot(dat) + geom_line(aes(x=z, y=p, colour=N, linetype=N), linewidth=
 ###################################################################################################################
 # Plot Figure 2
 
-ggarrange(fig2a + theme(legend.title=element_text(size=16), legend.text=element_text(size=16), legend.key.size=unit(3, "line")), 
+ggarrange(fig2a + theme(legend.title=element_text(size=16), legend.text=element_text(size=16), 
+                        legend.key.size=unit(3, "line")), 
           fig2b, fig2c, fig2d, ncol=4, nrow=1, common.legend=TRUE, legend="bottom")
