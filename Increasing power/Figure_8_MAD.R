@@ -17,7 +17,8 @@ while( iter <= num_iter ){
   if ( length(results$changepoints) >= 1 ){
     if ( results$changepoints[1] >= h & results$changepoints[1] <= (n - h) ){
       sig2 <- mad(x)
-      results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=sig2, num_pvals=1, include_original=TRUE, return_probs=TRUE)
+      results_pvals <- calculate_pvals_all(results, N=50, h=h, sigma2=sig2, num_pvals=1, include_original=TRUE, 
+                                           return_probs=TRUE)
       pvals[iter, 1] <- results_pvals$P_both[1] / results_pvals$P_phi_in_S[1]
       pvals[iter, 2] <- sum(results_pvals$P_both[1:2]) / sum(results_pvals$P_phi_in_S[1:2])
       pvals[iter, 3] <- sum(results_pvals$P_both[1:5]) / sum(results_pvals$P_phi_in_S[1:5])
@@ -51,7 +52,8 @@ for ( delta in c(1, 2, 3) ){
       if ( length(results$changepoints) >= 1 ){
         if ( results$changepoints[1] >= h & results$changepoints[1] <= n - h ){
           sigma2 <- mad(x)
-          pval_results <- calculate_pvals_all(results, h=h, sigma2=sigma2, N=50, include_original=TRUE, num_pvals=1, return_probs=TRUE)
+          pval_results <- calculate_pvals_all(results, h=h, sigma2=sigma2, N=50, include_original=TRUE, 
+                                              num_pvals=1, return_probs=TRUE)
           pvals[iter, 1] <- pval_results$P_both[1] / pval_results$P_phi_in_S[1]
           pvals[iter, 2] <- sum(pval_results$P_both[1:2]) / sum(pval_results$P_phi_in_S[1:2])
           pvals[iter, 3] <- sum(pval_results$P_both[1:5]) / sum(pval_results$P_phi_in_S[1:5])
@@ -87,7 +89,8 @@ dat <- data.frame(z=c(rep(seq(0, 1, length.out=nrow(pvals_sorted)), 5), NA), p=c
 fig7a <- ggplot(dat) + geom_line(aes(x=z, y=p, colour=N, linetype=N), linewidth=1.2) +
   geom_abline(intercept=0, slope=1) + labs(x="U(0,1)", y="P-value") + 
   theme_classic() +
-  theme(axis.text=element_text(size=16), axis.title=element_text(size=18), legend.title=element_text(size=16), legend.text=element_text(size=16))
+  theme(axis.text=element_text(size=16), axis.title=element_text(size=18), legend.title=element_text(size=16), 
+        legend.text=element_text(size=16))
 
 ###################################################################################################################
 # Fig. 7(b), H1 with delta = 2 and h = 10
